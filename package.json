@@ -1,0 +1,16 @@
+{
+  "name": "imoji",
+  "version": "1.0.0",
+  "description": "A sleek & responsive emoji input",
+  "main": "imoji.js",
+  "bugs": {
+    "url": "https://github.com/jonhue/imoji.js/issues",
+    "email": "me@jonhue.me"
+  },
+  "repository": "https://github.com/jonhue/imoji.js",
+  "author": "Jonas Hübotter <me@jonhue.me>",
+  "license": "MIT",
+  "dependencies": {
+    "jquery": "^3.3.1"
+  }
+}
