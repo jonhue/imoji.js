@@ -29,6 +29,25 @@ A sleek & responsive emoji input.
 
 ## Usage
 
+```html
+<div class="imoji-picker">
+    <div class="imoji-picker--search">
+        <div class="imoji-picker--search-delete">
+        </div>
+    </div>
+    <div class="imoji-picker--emojis">
+    </div>
+    <div class="imoji-picker--footer">
+        <div class="imoji-picker--search-trigger">
+        </div>
+        <div class="imoji-picker--categories">
+        </div>
+        <div class="imoji-picker--delete">
+        </div>
+    </div>
+</div>
+```
+
 ...
 
 ---

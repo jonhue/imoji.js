@@ -26,9 +26,9 @@
  */
 var Imoji = new function() {
 
-    this.element = null;
+    this.element = $('.imoji-picker');
     this.input = null;
-    this.emojis = [];
+    this.emojis = null;
 
     this.init = function(options) {
 
@@ -37,15 +37,70 @@ var Imoji = new function() {
         };
         options = $.extend( defaults, options );
 
-        Imoji.emojis = require(options.emojis);
-        Imoji.createElement();
+        var emojis = require(options.emojis);
+        Imoji.emojis = {};
+        var i = 0;
+        while ( i++ < emojis.length ) {
+            var key = emojis[i].category;
+            if ( typeof Imoji.emojis[key] == 'undefined' )
+                Imoji.emojis[key] = [];
+            Imoji.emojis[key].push(emojis[i]);
+        };
+
+        Imoji.create();
 
         $('[data-imoji]').click(function() {
+            Imoji.input = $(this).closest('input');
+            Imoji.open();
+        });
+
+        $('.imoji-picker--emojis-emoji').click(function() {
+            $.each( Imoji.emojis, function( category, emojis ) {
+                var emoji = $.grep( emojis, function(e) {
+                    return e.aliases[0] == $(this).attr('id').replace( 'imoji-emojis--', '' );
+                });
+            });
+            Imoji.select(emoji);
+        });
+
+        $(document).on( 'imoji:select', function( event, emoji ) {
+            if ( Imoji.input != null )
+                Imoji.updateInput(emoji.emoji);
         });
 
     };
 
-    this.createElement = function() {
+    this.create = function() {
+        var wrapper = $('.imoji-picker--emojis');
+        var categoriesWrapper = $('.imoji-picker--categories');
+
+        $.each( Imoji.emojis, function( category, emojis ) {
+            categoriesWrapper.append('<div class="imoji-picker--categories-category" id="imoji-categories-footer--' + category + '">' + emojis[0].emoji + '</div>');
+
+            wrapper.append('<div class="imoji-picker--emojis-category" id="imoji-categories--' + category + '"><h6>' + category + '</h6></div>');
+            var categoryWrapper = wrapper.find( '#imoji-categories--' + category );
+            $.each( emojis, function( k, emoji ) {
+                categoryWrapper.append('<div class="imoji-picker--emojis-emoji" id="imoji-emojis--' + emoji.aliases[0] + '">' + emoji.emoji + '</div>');
+            });
+        });
+    };
+
+    this.open = function() {
+        $(document).trigger('imoji:open');
+        $('body').addClass('imoji--open');
+    };
+
+    this.close = function() {
+        $(document).trigger('imoji:close');
+        $('body').removeClass('imoji--open');
+    };
+
+    this.select = function(emoji) {
+        $(document).trigger( 'imoji:select', [emoji] );
+    };
+
+    this.updateInput = function(emoji) {
+        $(Imoji.input).val( $(Imoji.input).val() + emoji );
     };
 
 };
