@@ -33,7 +33,8 @@ var Imoji = new function() {
     this.init = function(options) {
 
         var defaults = {
-            emojis: 'emoji.json'
+            emojis: 'emoji.json',
+            input: null
         };
         options = $.extend( defaults, options );
 
@@ -47,10 +48,12 @@ var Imoji = new function() {
             Imoji.emojis[key].push(emojis[i]);
         };
 
+        Imoji.input = options.input;
         Imoji.create();
 
         $('[data-imoji]').click(function() {
-            Imoji.input = $(this).closest('input');
+            if ( Imoji.input != false )
+                Imoji.input = $(this).closest('input');
             Imoji.open();
         });
 
@@ -64,7 +67,7 @@ var Imoji = new function() {
         });
 
         $(document).on( 'imoji:select', function( event, emoji ) {
-            if ( Imoji.input != null )
+            if ( $(Imoji.input).length > 0 )
                 Imoji.updateInput(emoji.emoji);
         });
 
@@ -75,18 +78,20 @@ var Imoji = new function() {
         var categoriesWrapper = $('.imoji-picker--categories');
 
         $.each( Imoji.emojis, function( category, emojis ) {
-            categoriesWrapper.append('<div class="imoji-picker--categories-category" id="imoji-categories-footer--' + category + '">' + emojis[0].emoji + '</div>');
+            categoriesWrapper.append('<div class="imoji-picker--categories-category imoji-icon" id="imoji-categories-footer--' + category + '">' + emojis[0].emoji + '</div>');
 
             wrapper.append('<div class="imoji-picker--emojis-category" id="imoji-categories--' + category + '"><h6>' + category + '</h6></div>');
             var categoryWrapper = wrapper.find( '#imoji-categories--' + category );
             $.each( emojis, function( k, emoji ) {
-                categoryWrapper.append('<div class="imoji-picker--emojis-emoji" id="imoji-emojis--' + emoji.aliases[0] + '">' + emoji.emoji + '</div>');
+                categoryWrapper.append('<div class="imoji-picker--emojis-emoji imoji-icon imoji-icon--sm" id="imoji-emojis--' + emoji.aliases[0] + '">' + emoji.emoji + '</div>');
             });
         });
     };
 
     this.open = function() {
         $(document).trigger('imoji:open');
+        if ( $(Imoji.input).length > 0 )
+            $(Imoji.element).focus();
         $('body').addClass('imoji--open');
     };
 

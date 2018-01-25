@@ -32,17 +32,18 @@ A sleek & responsive emoji input.
 ```html
 <div class="imoji-picker">
     <div class="imoji-picker--search">
-        <div class="imoji-picker--search-delete">
+        <input class="imoji-picker--search-input" type="text" placeholder="Search" />
+        <div class="imoji-picker--search-delete imoji-icon">
         </div>
     </div>
     <div class="imoji-picker--emojis">
     </div>
     <div class="imoji-picker--footer">
-        <div class="imoji-picker--search-trigger">
+        <div class="imoji-picker--search-trigger imoji-icon">
         </div>
         <div class="imoji-picker--categories">
         </div>
-        <div class="imoji-picker--delete">
+        <div class="imoji-picker--delete imoji-icon">
         </div>
     </div>
 </div>

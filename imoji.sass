@@ -1,3 +1,9 @@
+$height: 18.75rem
+$block: 3.125rem
+
+
+/* Layout */
+
 body
     transform: none
     transition: transform .25s ease-out
@@ -6,15 +12,55 @@ body
         bottom: 0
         left: 0
         right: 0
-        height: 18.75rem
+        height: $height
         width: 100%
         opacity: 0
         visibility: hidden
         pointer-events: none
-        transform: translateY(18.75rem)
+        transform: translateY(#{ $height })
         transition: transform .25s ease-out
+        display: grid
+        grid-template-rows: $block 1fr $block
+        grid-template-areas: "search" "emojis" "footer"
+        .imoji-icon
+            display: flex
+            align-items: center
+            justify-content: center
+            width: $block
+            height: $block
+            &.imoji-icon--sm
+                width: calc(#{ $block } / 2)
+                height: calc(#{ $block } / 2)
+        & > .imoji-picker--search
+            grid-area: search
+            position: relative
+            & > input.imoji-picker--search-input
+                width: 100%
+                padding-right: $block
+            & > .imoji-picker--search-delete
+                position: absolute
+                top: 0
+                right: 0
+                bottom: 0
+                width: $block
+                height: $block
+        & > .imoji-picker--emojis
+            grid-area: emojis
+            overflow-y: auto
+        & > .imoji-picker--footer
+            grid-area: footer
+            display: grid
+            grid-template-columns: $block 1fr $block
+            grid-template-areas: "search-trigger" "categories" "delete"
+            & > .imoji-picker--search-trigger
+                grid-area: search-trigger
+            & > .imoji-picker--categories
+                grid-area: categories
+                overflow-x: auto
+            & > .imoji-picker--delete
+                grid-area: delete
     &.imoji--open
-        transform: translateY(18.75rem)
+        transform: translateY(#{ $height })
         .imoji-picker
             opacity: 1
             visibility: visible
