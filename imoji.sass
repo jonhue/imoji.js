@@ -5,8 +5,8 @@ $block: 3.125rem
 /* Layout */
 
 body
-    transform: none
-    transition: transform .25s ease-out
+    margin-bottom: 0
+    transition: margin .25s ease-out
     .imoji-picker
         position: fixed
         bottom: 0
@@ -20,22 +20,31 @@ body
         transform: translateY(#{ $height })
         transition: transform .25s ease-out
         display: grid
-        grid-template-rows: $block 1fr $block
-        grid-template-areas: "search" "emojis" "footer"
+        grid-template-rows: 1fr $block
+        grid-template-areas: "emojis" "footer"
+        &.searching
+            grid-template-rows: $block 1fr $block
+            grid-template-areas: "search" "emojis" "footer"
+            & > .imoji-picker--search
+                display: block
         .imoji-icon
             display: flex
             align-items: center
             justify-content: center
             width: $block
             height: $block
+            cursor: pointer
             &.imoji-icon--sm
                 width: calc(#{ $block } / 2)
                 height: calc(#{ $block } / 2)
         & > .imoji-picker--search
+            display: none
             grid-area: search
             position: relative
             & > input.imoji-picker--search-input
                 width: 100%
+                height: $block
+                padding-left: .65rem
                 padding-right: $block
             & > .imoji-picker--search-delete
                 position: absolute
@@ -47,22 +56,80 @@ body
         & > .imoji-picker--emojis
             grid-area: emojis
             overflow-y: auto
+            & > .imoji-picker--emojis-category
+                padding: .65rem
+                display: flex
+                flex-wrap: wrap
+                h6
+                    width: 100%
+                & > .imoji-picker--emojis-emoji
+                    padding: .45em
         & > .imoji-picker--footer
             grid-area: footer
             display: grid
             grid-template-columns: $block 1fr $block
-            grid-template-areas: "search-trigger" "categories" "delete"
             & > .imoji-picker--search-trigger
-                grid-area: search-trigger
             & > .imoji-picker--categories
-                grid-area: categories
                 overflow-x: auto
+                overflow-y: hidden
             & > .imoji-picker--delete
-                grid-area: delete
     &.imoji--open
-        transform: translateY(#{ $height })
+        margin-bottom: $height
         .imoji-picker
             opacity: 1
             visibility: visible
             pointer-events: all
             transform: none
+
+
+/* Styling */
+
+body
+    // REMOVE
+    background: grey
+    // REMOVE
+    .imoji-picker
+        background: white
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol"
+        .imoji-icon
+            &.imoji-icon--sm
+        & > .imoji-picker--search
+            & > input.imoji-picker--search-input
+                outline: none
+                border: none
+                background: white
+                transition: background .25s ease-out
+                font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol"
+                font-size: .8125rem
+                &:focus
+                    background: #fafafa
+            & > .imoji-picker--search-delete
+        & > .imoji-picker--emojis
+            & > .imoji-picker--emojis-category
+                & > h6
+                    font-size: .8125rem
+                    text-transform: uppercase
+                    font-weight: bold
+                    margin: .5em 0
+                & > .imoji-picker--emojis-emoji
+                    font-size: 1.5rem
+                    border-radius: 4px
+                    background: white
+                    transition: background .25s ease-out
+                    &:hover
+                        background: #fafafa
+        & > .imoji-picker--footer
+            & > .imoji-picker--search-trigger
+            & > .imoji-picker--categories
+            & > .imoji-picker--delete
+        ::-webkit-scrollbar
+            width: .3125rem
+        ::-webkit-scrollbar-track
+            background: transparent
+        ::-webkit-scrollbar-thumb
+            border-radius: .15625rem
+            background: #DCE2E7
+        ::-webkit-scrollbar-thumb:hover
+            background: #bec7cf
+    &.imoji--open
+        .imoji-picker

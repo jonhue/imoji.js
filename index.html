@@ -1,0 +1,37 @@
+<doctype html>
+<html>
+<head>
+    <title>Test</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.5/require.min.js"></script>
+    <script src="imoji.js"></script>
+    <link rel="stylesheet" href="imoji.min.css" />
+</head>
+<body>
+    <div class="imoji-picker">
+        <div class="imoji-picker--search">
+            <input class="imoji-picker--search-input" type="text" placeholder="Search" />
+            <div class="imoji-picker--search-delete imoji-icon">
+            </div>
+        </div>
+        <div class="imoji-picker--emojis">
+        </div>
+        <div class="imoji-picker--footer">
+            <div class="imoji-picker--search-trigger imoji-icon">
+            </div>
+            <div class="imoji-picker--categories">
+            </div>
+            <div class="imoji-picker--delete imoji-icon">
+            </div>
+        </div>
+    </div>
+
+    <script>
+        $(document).on( 'ready', function() {
+            console.log('before');
+            Imoji.init();
+            console.log('after');
+        });
+    </script>
+</body>
+</html>

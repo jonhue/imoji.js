@@ -28,7 +28,7 @@ var Imoji = new function() {
 
     this.element = $('.imoji-picker');
     this.input = null;
-    this.emojis = null;
+    this.emojis = {};
 
     this.init = function(options) {
 
@@ -38,18 +38,20 @@ var Imoji = new function() {
         };
         options = $.extend( defaults, options );
 
-        var emojis = require(options.emojis);
-        Imoji.emojis = {};
-        var i = 0;
-        while ( i++ < emojis.length ) {
-            var key = emojis[i].category;
-            if ( typeof Imoji.emojis[key] == 'undefined' )
-                Imoji.emojis[key] = [];
-            Imoji.emojis[key].push(emojis[i]);
-        };
-
         Imoji.input = options.input;
-        Imoji.create();
+
+        $.getJSON( 'https://raw.githubusercontent.com/github/gemoji/master/db/emoji.json', function(data) {
+            var i = 0;
+            while ( i++ < data.length ) {
+                if ( typeof data[i] != 'undefined' && data[i].hasOwnProperty('category') ) {
+                    var key = data[i].category;
+                    if ( typeof Imoji.emojis[key] == 'undefined' )
+                        Imoji.emojis[key] = [];
+                    Imoji.emojis[key].push(data[i]);
+                };
+            };
+            Imoji.create();
+        });
 
         $('[data-imoji]').click(function() {
             if ( Imoji.input != false )
@@ -106,6 +108,19 @@ var Imoji = new function() {
 
     this.updateInput = function(emoji) {
         $(Imoji.input).val( $(Imoji.input).val() + emoji );
+    };
+
+    this.showSearch = function() {
+        $('.imoji-picker--emojis').animate( { 'marginTop': '50px' }, 250, function() {
+            $('.imoji-picker').addClass('searching');
+            $('.imoji-picker--emojis').css( 'marginTop', '0' );
+        });
+    };
+
+    this.hideSearch = function() {
+        $('.imoji-picker').removeClass('searching');
+        $('.imoji-picker--emojis').css( 'marginTop', '50px' );
+        $('.imoji-picker--emojis').animate( { 'marginTop': '0' }, 250 );
     };
 
 };
