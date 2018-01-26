@@ -69,6 +69,7 @@ var Imoji = new function() {
 
         $('.imoji-picker--delete').click(function() {
             Imoji.deleteFromInput();
+            $(Imoji.input).focus();
         });
 
         $('input.imoji-picker--search-input').on( 'input', function() {
@@ -82,6 +83,7 @@ var Imoji = new function() {
 
         $('.imoji-picker--search-delete').click(function() {
             $('input.imoji-picker--search-input').val('').focus();
+            Imoji.render(Imoji.emojis);
         });
 
         $(document).mouseup(function(event) {
@@ -93,16 +95,12 @@ var Imoji = new function() {
         $(document).on( 'imoji:select', function( event, emoji ) {
             if ( $(Imoji.input).length > 0 )
                 Imoji.updateInput(emoji.emoji);
+                $(Imoji.input).focus();
         });
 
     };
 
     this.create = function() {
-        if ( $(Imoji.input).length > 0 ) {
-            $('imoji-picker--footer').addClass('input-controls');
-        } else {
-            $('imoji-picker--footer').removeClass('input-controls');
-        };
         var categoriesWrapper = $('.imoji-picker--categories');
 
         $.each( Imoji.emojis, function( category, emojis ) {
@@ -185,9 +183,15 @@ var Imoji = new function() {
     };
 
     this.open = function() {
+        if ( $(Imoji.input).length > 0 ) {
+            $('.imoji-picker--footer').addClass('input-controls');
+        } else {
+            $('.imoji-picker--footer').removeClass('input-controls');
+        };
+
         $(document).trigger('imoji:open');
-        if ( $(Imoji.input).length > 0 )
-            $('.imoji-picker').focus();
+        // if ( $(Imoji.input).length > 0 )
+        //     $('.imoji-picker').focus();
         $('body').addClass('imoji--open');
     };
 

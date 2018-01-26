@@ -1,6 +1,6 @@
 $(function() {
     Imoji.init();
-    setTimeout(function() {
-        Imoji.open();
-    }, 500);
+    // setTimeout(function() {
+    //     Imoji.open();
+    // }, 500);
 });
