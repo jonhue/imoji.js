@@ -149,34 +149,9 @@ var Imoji = new function() {
         var result = {};
         $.each( Imoji.emojis, function( category, emojis ) {
             result[category] = $.grep( emojis, function(e) {
-                var inAliases = $.inArray( query, e.aliases ) != -1;
-                var inTags = $.inArray( query, e.tags ) != -1;
-                return inAliases == true || inTags == true;
+                return e.aliases.find( a => a.includes(query) ) || e.tags.find( a => a.includes(query) );
             });
         });
-        console.log(result);
-        // var result = {};
-        // $.each( Imoji.emojis, function( category, emojis ) {
-        //     result[category] = $.grep( emojis, function(e) {
-        //         var inAliases = false,
-        //             inTags = false;
-        //         $.each( e.aliases, function(alias) {
-        //             if (alias == 'smile')
-        //                 alert(alias);
-        //             inAliases = $.inArray( query, alias ) != -1;
-        //             if (inAliases)
-        //                 console.log(inAliases);
-        //                 return false;
-        //         });
-        //         $.each( e.tags, function(tag) {
-        //             inTags = $.inArray( query, tag ) != -1;
-        //             if (inTags)
-        //                 return false;
-        //         });
-        //         return inAliases || inTags;
-        //     });
-        // });
-        // console.log(result);
         $('.imoji-picker--emojis').fadeOut( 250, function() {
             Imoji.render(result);
         });
@@ -190,8 +165,6 @@ var Imoji = new function() {
         };
 
         $(document).trigger('imoji:open');
-        // if ( $(Imoji.input).length > 0 )
-        //     $('.imoji-picker').focus();
         $('body').addClass('imoji--open');
     };
 
