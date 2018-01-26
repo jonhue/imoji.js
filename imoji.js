@@ -71,7 +71,7 @@ var Imoji = new function() {
         });
 
         $('.imoji-picker--search-delete').click(function() {
-            $('input.imoji-picker--search-input').val('');
+            $('input.imoji-picker--search-input').val('').focus();
         });
 
         $(document).mouseup(function(event) {
@@ -153,17 +153,22 @@ var Imoji = new function() {
     };
 
     this.showSearch = function() {
+        $('.imoji-picker--search').hide();
         $('.imoji-picker--emojis').animate( { 'marginTop': '50px' }, 250, function() {
             $('.imoji-picker').addClass('searching');
             $('.imoji-picker--emojis').css( 'marginTop', '0' );
-            $('input.imoji-picker--search-input').focus();
+            $('.imoji-picker--search').fadeIn( 250, function() {
+                $('input.imoji-picker--search-input').focus();
+            });
         });
     };
 
     this.hideSearch = function() {
-        $('.imoji-picker').removeClass('searching');
-        $('.imoji-picker--emojis').css( 'marginTop', '50px' );
-        $('.imoji-picker--emojis').animate( { 'marginTop': '0' }, 250 );
+        $('.imoji-picker--search').fadeOut( 250, function() {
+            $('.imoji-picker').removeClass('searching');
+            $('.imoji-picker--emojis').css( 'marginTop', '50px' );
+            $('.imoji-picker--emojis').animate( { 'marginTop': '0' }, 250 );
+        });
     };
 
     this.scrollToCategory = function(category) {
