@@ -221,6 +221,7 @@ var Imoji = new function() {
 
     this.hideSearch = function() {
         $('.imoji-picker--search').fadeOut( 250, function() {
+            $('input.imoji-picker--search-input').val('');
             $('.imoji-picker').removeClass('searching');
             $('.imoji-picker--emojis').css( 'marginTop', '50px' );
             $('.imoji-picker--emojis').animate( { 'marginTop': '0' }, 250, function() {
