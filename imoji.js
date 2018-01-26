@@ -26,21 +26,20 @@
  */
 var Imoji = new function() {
 
-    this.element = $('.imoji-picker');
     this.input = null;
     this.emojis = {};
 
     this.init = function(options) {
 
         var defaults = {
-            emojis: 'emoji.json',
+            emojis: 'https://raw.githubusercontent.com/github/gemoji/master/db/emoji.json',
             input: null
         };
         options = $.extend( defaults, options );
 
         Imoji.input = options.input;
 
-        $.getJSON( 'https://raw.githubusercontent.com/github/gemoji/master/db/emoji.json', function(data) {
+        $.getJSON( options.emojis, function(data) {
             var i = 0;
             while ( i++ < data.length ) {
                 if ( typeof data[i] != 'undefined' && data[i].hasOwnProperty('category') ) {
@@ -115,7 +114,7 @@ var Imoji = new function() {
     this.open = function() {
         $(document).trigger('imoji:open');
         if ( $(Imoji.input).length > 0 )
-            $(Imoji.element).focus();
+            $('.imoji-picker').focus();
         $('body').addClass('imoji--open');
     };
 
@@ -125,7 +124,11 @@ var Imoji = new function() {
     };
 
     this.select = function(emoji) {
-        $(document).trigger( 'imoji:select', [emoji] );
+        var e = jQuery.Event('imoji:select');
+        e.data = {
+            emoji: emoji,
+        };
+        $(document).trigger(e);
     };
 
     this.updateInput = function(emoji) {
