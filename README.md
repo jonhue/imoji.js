@@ -16,6 +16,10 @@ A sleek & responsive emoji input.
 
 * [Information](#information)
 * [Usage](#usage)
+    * [Functions](#functions)
+    * [Input](#input)
+    * [Events](#events)
+    * [Custom emojis](#custom-emojis)
 * [To Do](#to-do)
 * [Contributing](#contributing)
     * [Contributors](#contributors)
@@ -26,13 +30,15 @@ A sleek & responsive emoji input.
 
 ## Information
 
-**Size:** Imoji.js takes < 1kb gzipped.
+**Size:** Imoji takes < 1kb gzipped.
 
 **Dependencies:** [jQuery](https://github.com/jquery/jquery)
 
 ---
 
 ## Usage
+
+To add Imoji put the following code in your `<body>` tag:
 
 ```html
 <div class="imoji-picker">
@@ -62,7 +68,80 @@ C4.409,13.862,4.696,14,5,14h10c0.553,0,1-0.448,1-1V3C16,2.448,15.553,2,15,2z M14
 </div>
 ```
 
-...
+Now initialize Imoji:
+
+```js
+Imoji.init();
+```
+
+### Functions
+
+```js
+// Open the Imoji picker
+Imoji.open();
+
+// Close the Imoji picker
+Imoji.close();
+
+// Search for emojis (aliases/tags)
+Imoji.search('smile');
+
+// Select an emoji (alias)
+Imoji.select('smile');
+
+// Render a hash of emoji categories including emoji objects in an array
+Imoji.render(emojis);
+
+// Scrolls to an emoji category
+Imoji.scrollToCategory('People');
+
+// Shows the search input
+Imoji.showSearch();
+
+// Hides and resets the search input
+Imoji.hideSearch();
+```
+
+### Inputs
+
+To use Imoji with an `<input>` element, first associate it with `Imoji`. There are two ways to do so:
+
+1) Attach the input to Imoji on initialization:
+
+```js
+Imoji.init({ input: $('input#imoji') })
+```
+
+2) Open the Imoji picker from the form:
+
+```html
+<input type="text" data-imoji></input>
+```
+
+You can also trigger the Imoji picker from another element, Imoji will take the closest `<input>` tag:
+
+```html
+<input type="text"></input>
+<div class="trigger-imoji" data-imoji></div>
+```
+
+### Events
+
+Imoji emits events that allow you to track the emoji selection. Imoji fires events on the `$(document)` object.
+
+* `imoji:open` fires before the Imoji picker opens.
+
+* `imoji:close` fires before the Imoji picker closes.
+
+* `imoji:select` fires when an emoji has been selected. Access the emoji object with the second callback parameter.
+
+### Custom emojis
+
+Imoji uses the [`emoji.json`](https://github.com/github/gemoji/blob/master/db/emoji.json) data from the [gemoji](https://github.com/github/gemoji) project of GitHub. You can also use your own JSON file. It's structure should be similar to the default data however.
+
+```js
+Imoji.init({ emojis: '/emojis.json' })
+```
 
 ---
 
