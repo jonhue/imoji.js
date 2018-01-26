@@ -49,22 +49,13 @@ var Imoji = new function() {
                     Imoji.emojis[key].push(data[i]);
                 };
             };
-            Imoji.create();
+            Imoji.render(Imoji.emojis);
         });
 
         $('[data-imoji]').click(function() {
             if ( Imoji.input != false )
                 Imoji.input = $(this).closest('input');
             Imoji.open();
-        });
-
-        $('.imoji-picker--emojis-emoji').click(function() {
-            $.each( Imoji.emojis, function( category, emojis ) {
-                var emoji = $.grep( emojis, function(e) {
-                    return e.aliases[0] == $(this).attr('id').replace( 'imoji-emojis--', '' );
-                });
-            });
-            Imoji.select(emoji);
         });
 
         $('.imoji-picker--search-trigger').click(function() {
@@ -83,6 +74,12 @@ var Imoji = new function() {
             $('input.imoji-picker--search-input').val('');
         });
 
+        $(document).mouseup(function(event) {
+            if ( !$('.imoji-picker').is(event.target) && $('.imoji-picker').has(event.target).length === 0 ) {
+                Imoji.close();
+            };
+        });
+
         $(document).on( 'imoji:select', function( event, emoji ) {
             if ( $(Imoji.input).length > 0 )
                 Imoji.updateInput(emoji.emoji);
@@ -90,17 +87,20 @@ var Imoji = new function() {
 
     };
 
-    this.create = function() {
+    this.render = function(emojis) {
         if ( $(Imoji.input).length > 0 ) {
-            $('.imoji-picker--delete').css( 'display', 'block' );
+            $('imoji-picker--footer').addClass('input-controls');
         } else {
-            $('.imoji-picker--delete').css( 'display', 'none' );
+            $('imoji-picker--footer').removeClass('input-controls');
         };
 
         var wrapper = $('.imoji-picker--emojis');
         var categoriesWrapper = $('.imoji-picker--categories');
 
-        $.each( Imoji.emojis, function( category, emojis ) {
+        wrapper.empty();
+        categoriesWrapper.empty();
+
+        $.each( emojis, function( category, emojis ) {
             categoriesWrapper.append('<div class="imoji-picker--categories-category imoji-icon" id="imoji-categories-footer--' + category + '">' + emojis[0].emoji + '</div>');
 
             wrapper.append('<div class="imoji-picker--emojis-category" id="imoji-categories--' + category + '"><h6>' + category + '</h6></div>');
@@ -108,6 +108,19 @@ var Imoji = new function() {
             $.each( emojis, function( k, emoji ) {
                 categoryWrapper.append('<div class="imoji-picker--emojis-emoji imoji-icon imoji-icon--sm" id="imoji-emojis--' + emoji.aliases[0] + '">' + emoji.emoji + '</div>');
             });
+        });
+
+        $('.imoji-picker--emojis-emoji').click(function() {
+            $.each( Imoji.emojis, function( category, emojis ) {
+                var emoji = $.grep( emojis, function(e) {
+                    return e.aliases[0] == $(this).attr('id').replace( 'imoji-emojis--', '' );
+                });
+            });
+            Imoji.select(emoji);
+        });
+
+        $('.imoji-picker--categories-category').click(function() {
+            Imoji.scrollToCategory($(this).attr('id').replace( 'imoji-categories-footer--', '' ));
         });
     };
 
@@ -143,6 +156,7 @@ var Imoji = new function() {
         $('.imoji-picker--emojis').animate( { 'marginTop': '50px' }, 250, function() {
             $('.imoji-picker').addClass('searching');
             $('.imoji-picker--emojis').css( 'marginTop', '0' );
+            $('input.imoji-picker--search-input').focus();
         });
     };
 
@@ -150,6 +164,13 @@ var Imoji = new function() {
         $('.imoji-picker').removeClass('searching');
         $('.imoji-picker--emojis').css( 'marginTop', '50px' );
         $('.imoji-picker--emojis').animate( { 'marginTop': '0' }, 250 );
+    };
+
+    this.scrollToCategory = function(category) {
+        var scrollTop = $('.imoji-picker--emojis').scrollTop() - $('.imoji-picker--emojis').offset().top;
+        $('.imoji-picker--emojis').animate({
+            scrollTop: $('.imoji-picker--emojis').find( '#imoji-categories--' + category ).offset().top + scrollTop
+        }, 1000);
     };
 
 };

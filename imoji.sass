@@ -32,10 +32,12 @@ body
             align-items: center
             justify-content: center
             width: $block
+            min-width: $block
             height: $block
             cursor: pointer
             &.imoji-icon--sm
                 width: calc(#{ $block } / 2)
+                min-width: calc(#{ $block } / 2)
                 height: calc(#{ $block } / 2)
         & > .imoji-picker--search
             display: none
@@ -60,20 +62,27 @@ body
                 padding: .65rem
                 display: flex
                 flex-wrap: wrap
-                h6
+                justify-content: center
+                & > h6
                     width: 100%
+                    justify-self: flex-start
                 & > .imoji-picker--emojis-emoji
                     padding: .45em
         & > .imoji-picker--footer
             grid-area: footer
             display: grid
-            grid-template-columns: $block 1fr $block
+            grid-template-columns: $block 1fr
+            &.input-controls
+                grid-template-columns: $block 1fr $block
+                & > .imoji-picker--delete
+                    display: block
             & > .imoji-picker--search-trigger
             & > .imoji-picker--categories
                 display: flex
                 overflow-x: auto
                 overflow-y: hidden
             & > .imoji-picker--delete
+                display: none
     &.imoji--open
         margin-bottom: $height
         .imoji-picker
@@ -91,6 +100,7 @@ body
     // REMOVE
     .imoji-picker
         background: white
+        cursor: default
         font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol"
         .imoji-icon
             &.imoji-icon--sm
@@ -120,8 +130,15 @@ body
                     &:hover
                         background: #fafafa
         & > .imoji-picker--footer
+            ::-webkit-scrollbar
+                height: .3125rem
             & > .imoji-picker--search-trigger
             & > .imoji-picker--categories
+                & > .imoji-picker--categories-category
+                    background: white
+                    transition: background .25s ease-out
+                    &:hover
+                        background: #fafafa
             & > .imoji-picker--delete
         ::-webkit-scrollbar
             width: .3125rem
