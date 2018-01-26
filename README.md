@@ -55,8 +55,8 @@ C4.3,12.1,2,9.9,2,7.1S4.3,2,7.1,2s5.1,2.3,5.1,5.1S9.9,12.1,7.1,12.1z"></path></g
         <div class="imoji-picker--categories">
         </div>
         <div class="imoji-picker--delete imoji-icon">
-            <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="16px" height="16px" viewBox="0 0 16 16"><g transform="translate(0, 0)"><path fill="#2b2b2b" d="M15,2H5C4.7,2,4.4,2.1,4.2,2.4l-4,5c-0.3,0.4-0.3,0.9,0,1.2l4,5C4.4,13.9,4.7,14,5,14h10c0.6,0,1-0.4,1-1V3
-C16,2.4,15.6,2,15,2z"></path></g></svg>
+            <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="16px" height="16px" viewBox="0 0 16 16"><g transform="translate(0, 0)"><path fill="#2b2b2b" d="M15,2H5C4.696,2,4.409,2.138,4.219,2.375l-4,5c-0.292,0.365-0.292,0.884,0,1.249l4,5
+C4.409,13.862,4.696,14,5,14h10c0.553,0,1-0.448,1-1V3C16,2.448,15.553,2,15,2z M14,12H5.48l-3.2-4l3.2-4H14V12z"></path></g></svg>
         </div>
     </div>
 </div>
