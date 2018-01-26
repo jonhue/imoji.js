@@ -1,4 +1,4 @@
-# Imoji.js
+# Imoji
 
 ![NPM Version](https://img.shields.io/npm/v/imoji.svg)
 <img src="https://travis-ci.org/jonhue/imoji.js.svg?branch=master" />
@@ -19,7 +19,8 @@ A sleek & responsive emoji input.
     * [Functions](#functions)
     * [Input](#input)
     * [Events](#events)
-    * [Custom emojis](#custom-emojis)
+    * [Emojis](#emojis)
+    * [Styles](#styles)
 * [To Do](#to-do)
 * [Contributing](#contributing)
     * [Contributors](#contributors)
@@ -135,13 +136,17 @@ Imoji emits events that allow you to track the emoji selection. Imoji fires even
 
 * `imoji:select` fires when an emoji has been selected. Access the emoji object with the second callback parameter.
 
-### Custom emojis
+### Emojis
 
 Imoji uses the [`emoji.json`](https://github.com/github/gemoji/blob/master/db/emoji.json) data from the [gemoji](https://github.com/github/gemoji) project of GitHub. You can also use your own JSON file. It's structure should be similar to the default data however.
 
 ```js
 Imoji.init({ emojis: '/emojis.json' })
 ```
+
+### Styles
+
+If you want to customize the styling of Imoji, override the CSS values specified in the styling section of [imoji.sass](https://github.com/jonhue/imoji.js/blob/master/imoji.sass#L94).
 
 ---
 
