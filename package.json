@@ -1,6 +1,6 @@
 {
   "name": "imoji",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "A sleek & responsive emoji input",
   "main": "imoji.js",
   "homepage": "https://jonhue.github.io/imoji.js",

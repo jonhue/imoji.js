@@ -1,6 +1,6 @@
 /**!
  * @fileOverview Imoji.js - A sleek & responsive emoji input
- * @version 1.0.0
+ * @version 1.0.1
  * @license
  * MIT License
  *
@@ -149,7 +149,16 @@ var Imoji = new function() {
         var result = {};
         $.each( Imoji.emojis, function( category, emojis ) {
             result[category] = $.grep( emojis, function(e) {
-                return e.aliases.find( a => a.includes(query) ) || e.tags.find( a => a.includes(query) );
+                var x = false;
+                $.each( e.aliases, function(k, value) {
+                    if (value.indexOf(query) != -1)
+                        x = true
+                });
+                $.each( e.tags, function(k, value) {
+                    if (value.indexOf(query) != -1)
+                        x = true
+                });
+                return x;
             });
         });
         $('.imoji-picker--emojis').fadeOut( 250, function() {
