@@ -5,10 +5,10 @@
 
 A sleek & responsive emoji input.
 
+**[Demo](https://jonhue.github.io/imoji.js)**
+
 ![screenshot](https://user-images.githubusercontent.com/13420273/35448108-b7339f2a-02b9-11e8-9e67-aaecb1a5d84f.png)
 ![screenshot](https://user-images.githubusercontent.com/13420273/35448236-09fbdbe6-02ba-11e8-8236-4c82054b5a64.png)
-
-**[Demo](https://jonhue.github.io/imoji.js)**
 
 ---
 
