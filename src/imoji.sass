@@ -1,6 +1,6 @@
 /**!
  * @fileOverview Imoji.js - A sleek & responsive emoji input
- * @version 1.0.1
+ * @version 2.0.0
  * @license
  * MIT License
  *
@@ -24,8 +24,8 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-$height: 18.75rem
-$block: 3.125rem
+$height: 18.75rem !default
+$block: 3.125rem !default
 
 
 /* Layout */
@@ -48,11 +48,20 @@ body
         display: grid
         grid-template-rows: 1fr $block
         grid-template-areas: "emojis" "footer"
+        margin-top: 0
         &.searching
             grid-template-rows: $block 1fr $block
             grid-template-areas: "search" "emojis" "footer"
+            margin-top: 3.125rem
             & > .imoji-picker--search
                 display: block
+        *
+            opacity: 1
+            visibility: visible
+            transition: all .25s ease-out
+        .imoji--hidden
+            opacity: 0
+            visibility: hidden
         .imoji-icon
             display: flex
             align-items: center
@@ -66,8 +75,12 @@ body
                 height: calc(#{ $block } / 2)
         & > .imoji-picker--search
             display: none
+            opacity: 0
             grid-area: search
             position: relative
+            &.imoji-picker--search--shown
+                display: block
+                opacity: 1
             & > input.imoji-picker--search-input
                 width: 100%
                 height: $block
@@ -133,14 +146,12 @@ body
                 outline: none
                 border: none
                 background: white
-                transition: background .25s ease-out
                 font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol"
                 font-size: .95rem
                 &:focus
                     background: #fafafa
             & > .imoji-picker--search-delete
                 opacity: .4
-                transition: opacity .25s ease-out
                 &:hover
                     opacity: .6
         & > .imoji-picker--emojis
@@ -154,7 +165,6 @@ body
                     font-size: 1.5rem
                     border-radius: 4px
                     background: white
-                    transition: background .25s ease-out
                     &:hover
                         background: #fafafa
         & > .imoji-picker--footer
@@ -164,7 +174,6 @@ body
             & > .imoji-picker--categories
                 & > .imoji-picker--categories-category
                     background: white
-                    transition: background .25s ease-out
                     &:hover
                         background: #fafafa
                     &.disabled

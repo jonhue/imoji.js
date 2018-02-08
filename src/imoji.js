@@ -32,7 +32,7 @@ window.Imoji = new function() {
     this.init = function(options) {
 
         let defaults = {
-            emojis: 'https://cdn.rawgit.com/github/gemoji/3f605714/db/emoji.json',
+            emojis: '../db/emojis.json',
             input: null
         };
         options = extend( {}, defaults, options );
@@ -46,28 +46,25 @@ window.Imoji = new function() {
 
         Imoji.input = options.input;
 
-        var request = new XMLHttpRequest;
-        request.open( 'GET', options.emojis, true );
-        request.onload = () => {
-            let data = JSON.parse(this.response),
-                i = 0;
-            while ( i++ < data.length ) {
-                if ( typeof data[i] != 'undefined' && data[i].hasOwnProperty('category') ) {
-                    var key = data[i].category;
-                    if ( typeof Imoji.emojis[key] == 'undefined' )
-                        Imoji.emojis[key] = [];
-                    Imoji.emojis[key].push(data[i]);
-                };
+        let data = JSON.parse(require([options.emojis])),
+            i = 0;
+        while ( i++ < data.length ) {
+            if ( typeof data[i] != 'undefined' && data[i].hasOwnProperty('category') ) {
+                var key = data[i].category;
+                if ( typeof Imoji.emojis[key] == 'undefined' )
+                    Imoji.emojis[key] = [];
+                Imoji.emojis[key].push(data[i]);
             };
-            Imoji.create();
-            Imoji.render(Imoji.emojis);
         };
-        request.send();
+        Imoji.create();
+        Imoji.render(Imoji.emojis);
 
-        document.querySelectorAll('[data-imoji]').addEventListener( 'click', () => {
-            if ( Imoji.input != false )
-                Imoji.input = this.closest('input');
-            Imoji.open();
+        document.querySelectorAll('[data-imoji]').forEach((element) => {
+            element.addEventListener( 'click', () => {
+                if ( Imoji.input != false )
+                    Imoji.input = this.closest('input');
+                Imoji.open();
+            });
         });
 
         document.querySelector('.imoji-picker--search-trigger').addEventListener( 'click', () => {
@@ -83,7 +80,7 @@ window.Imoji = new function() {
             Imoji.input.focus;
         });
 
-        document.querySelectorAll('input.imoji-picker--search-input').addEventListener( 'input', () => {
+        document.querySelector('input.imoji-picker--search-input').addEventListener( 'input', () => {
             if ( this.value == '' ) {
                 Imoji.render(Imoji.emojis);
             } else {
@@ -121,53 +118,53 @@ window.Imoji = new function() {
 
     this.render = (emojis) => {
         let wrapper = document.querySelector('.imoji-picker--emojis');
-        wrapper.style.display = 'none';
-        wrapper.innerHTML = '';
+        wrapper.classList.add('imoji--hide');
+        setTimeout(() => {
+            wrapper.innerHTML = '';
 
-        emojis.forEach(( category, emojis ) => {
-            if ( emojis.length > 0 ) {
-                document.querySelector( '#imoji-categories-footer--' + category ).classList.remove('disabled');
-                wrapper.appendChild('<div class="imoji-picker--emojis-category" id="imoji-categories--' + category + '"><h6>' + category + '</h6></div>');
-                let categoryWrapper = wrapper.querySelector( '#imoji-categories--' + category );
-                emojis.forEach( ( k, emoji ) => categoryWrapper.appendChild('<div class="imoji-picker--emojis-emoji imoji-icon imoji-icon--sm" id="imoji-emojis--' + emoji.aliases[0] + '">' + emoji.emoji + '</div>') );
-            } else {
-                document.querySelector( '#imoji-categories-footer--' + category ).classList.add('disabled');
-            };
-        });
-
-        wrapper.fadeIn(250); // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-
-        document.querySelectorAll('.imoji-picker--emojis-emoji').addEventListener( 'click', () => {
-            let alias = this.getAttribute('id').replace( 'imoji-emojis--', '' ),
-                emoji = [];
-            Imoji.emojis.forEach(( category, emojis ) => {
-                if ( emoji.length == 0 ) {
-                    emoji = emojis.filter( (e) => e.aliases[0] == alias );
+            emojis.forEach(( category, emojis ) => {
+                if ( emojis.length > 0 ) {
+                    document.querySelector( '#imoji-categories-footer--' + category ).classList.remove('disabled');
+                    wrapper.appendChild('<div class="imoji-picker--emojis-category" id="imoji-categories--' + category + '"><h6>' + category + '</h6></div>');
+                    let categoryWrapper = wrapper.querySelector( '#imoji-categories--' + category );
+                    emojis.forEach( ( k, emoji ) => categoryWrapper.appendChild('<div class="imoji-picker--emojis-emoji imoji-icon imoji-icon--sm" id="imoji-emojis--' + emoji.aliases[0] + '">' + emoji.emoji + '</div>') );
+                } else {
+                    document.querySelector( '#imoji-categories-footer--' + category ).classList.add('disabled');
                 };
             });
-            Imoji.select(emoji[0]);
-        });
+
+            wrapper.classList.remove('imoji--hide');
+
+            document.querySelectorAll('.imoji-picker--emojis-emoji').addEventListener( 'click', () => {
+                let alias = this.getAttribute('id').replace( 'imoji-emojis--', '' ),
+                    emoji = [];
+                Imoji.emojis.forEach(( category, emojis ) => {
+                    if ( emoji.length == 0 ) {
+                        emoji = emojis.filter( (e) => e.aliases[0] == alias );
+                    };
+                });
+                Imoji.select(emoji[0]);
+            });
+        }, 250);
     };
 
     this.search = (query) => {
         let result = {};
         Imoji.emojis.forEach(( category, emojis ) => {
-            result[category] = $.grep( emojis, function(e) { // !!!!!!!!!!!!!!!!!!!!!!!!!!!
-                var x = false;
-                $.each( e.aliases, function(k, value) {
-                    if (value.indexOf(query) != -1)
+            result[category] = emojis.filter((e) => {
+                let x = false;
+                e.aliases.forEach((k, value) => {
+                    if ( value.indexOf(query) != -1 )
                         x = true
                 });
-                $.each( e.tags, function(k, value) {
-                    if (value.indexOf(query) != -1)
+                e.tags.forEach((k, value) => {
+                    if ( value.indexOf(query) != -1 )
                         x = true
                 });
                 return x;
             });
         });
-        $('.imoji-picker--emojis').fadeOut( 250, function() { // !!!!!!!!!!!!!!!!!!!!!!!!!!!
-            Imoji.render(result);
-        });
+        Imoji.render(result);
     };
 
     this.open = () => {
@@ -217,41 +214,56 @@ window.Imoji = new function() {
     };
 
     this.showSearch = () => {
-        let emojis = document.querySelector('.imoji-picker--emojis');
         document.querySelector('.imoji-picker--search').style.display = 'none';
-        emojis.animate( { 'marginTop': '50px' }, 250, function() { // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-            document.querySelector('.imoji-picker').classList.add('searching');
-            emojis.style.marginTop = 0;
-            document.querySelector('.imoji-picker--search').fadeIn( 250, function() { // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-                document.querySelector('input.imoji-picker--search-input').focus;
-            });
-        });
+        document.querySelector('.imoji-picker').classList.add('searching');
+        setTimeout(() => {
+            document.querySelector('.imoji-picker--search').classList.add('imoji-picker--search--shown');
+            setTimeout(() => document.querySelector('input.imoji-picker--search-input').focus, 250 );
+        }, 250);
     };
 
     this.hideSearch = () => {
-        let emojis = document.querySelector('.imoji-picker--emojis');
-        document.querySelector('.imoji-picker--search').fadeOut( 250, function() { // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+        document.querySelector('.imoji-picker--search').classList.remove('imoji-picker--search--shown');
+        setTimeout(() => {
             document.querySelector('input.imoji-picker--search-input').value = '';
             document.querySelector('.imoji-picker').classList.remove('searching');
-            emojis.style.marginTop = '50px';
-            emojis.animate( { 'marginTop': '0' }, 250, function() { // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-                setTimeout(function() {
-                    Imoji.render(Imoji.emojis);
-                }, 25);
-            });
-        });
+            setTimeout(() => Imoji.render(Imoji.emojis), 250 );
+        }, 250);
     };
 
     this.scrollToCategory = (category) => {
-        let emojis = document.querySelector('.imoji-picker--emojis'),
-            element = emojis.querySelector( '#imoji-categories--' + category ),
-            scrollTop = emojis.scrollTop - emojis.offset.top;
+        let element = document.querySelector( '.imoji-picker--emojis #imoji-categories--' + category );
 
         if ( element.length > 0 ) {
-            emojis.animate({ // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-                scrollTop: element.offset().top + scrollTop
-            }, 1000);
+            scrollTo( document.querySelector('.imoji-picker--emojis'), element.offset.top, 1000 );
         };
     };
 
+};
+
+
+
+
+function scrollTo( element, to, duration ) {
+    let start = element.scrollTop - emojis.offset.top,
+        change = to - start,
+        currentTime = 0,
+        increment = 20;
+
+    let animateScroll = function() {
+        currentTime += increment;
+        var val = Math.easeInOutQuad( currentTime, start, change, duration );
+        element.scrollTop = val;
+        if ( currentTime < duration ) {
+            setTimeout( animateScroll, increment );
+        }
+    };
+    animateScroll();
+}
+
+Math.easeInOutQuad = (t, b, c, d) => {
+    t /= d/2;
+        if (t < 1) return c/2*t*t + b;
+        t--;
+        return -c/2 * (t*(t-2) - 1) + b;
 };

@@ -33,8 +33,6 @@ A sleek & responsive emoji input.
 
 **Size:** Imoji takes < 1kb gzipped.
 
-**Dependencies:** [jQuery](https://github.com/jquery/jquery)
-
 ---
 
 ## Usage
@@ -72,6 +70,7 @@ C4.409,13.862,4.696,14,5,14h10c0.553,0,1-0.448,1-1V3C16,2.448,15.553,2,15,2z M14
 Now initialize Imoji:
 
 ```js
+import 'imoji';
 Imoji.init();
 ```
 
@@ -138,7 +137,7 @@ Imoji emits events that allow you to track the emoji selection. Imoji fires even
 
 ### Emojis
 
-Imoji uses the [`emoji.json`](https://github.com/github/gemoji/blob/master/db/emoji.json) data from the [gemoji](https://github.com/github/gemoji) project of GitHub. You can also use your own JSON file. It's structure should be similar to the default data however.
+Imoji uses the [`emojis.json`](db/emojis.json) data from the [gemoji](https://github.com/github/gemoji) project of GitHub. You can also use your own JSON file. It's structure should be similar to the default data however.
 
 ```js
 Imoji.init({ emojis: '/emojis.json' })
@@ -146,7 +145,7 @@ Imoji.init({ emojis: '/emojis.json' })
 
 ### Styles
 
-If you want to customize the styling of Imoji, override the CSS values specified in the styling section of [imoji.sass](https://github.com/jonhue/imoji.js/blob/master/imoji.sass#L94).
+If you want to customize the styling of Imoji, override the CSS values specified in the styling section of [imoji.sass](https://github.com/jonhue/imoji.js/blob/master/imoji.sass#L133).
 
 ---
 
